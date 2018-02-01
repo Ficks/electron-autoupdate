@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>云广科技2.0</title>
+</head>
+
+<body>
+    <div id="app">
+        <div id="error">
+            出错信息：
+            <span></span>
+        </div>
+        <div id="checking">
+            正在检查更新……：
+            <span></span>
+        </div>
+        <div id="updateAva">
+            检测到新版本，正在下载……：
+            <span></span>
+        </div>
+        <div id="updateNotAva">
+            现在使用的就是最新版本，不用更新：
+            <span></span>
+        </div>
+        <div id="yes">
+            下载完成：
+            <span></span>
+        </div>
+    </div>
+    <script src=./jquery.min.js></script>
+    <script>
+        if (typeof module === 'object') {
+            window.jQuery = window.$ = module.exports;
+        };
+    </script>
+    <script>
+        const electron = require('electron');
+        const ipcRenderer = electron.ipcRenderer;
+        ipcRenderer.on('message', function (event, text) {
+            if (text == "检查更新出错") {
+                alert(text)
+                $("#error span").text(text);
+            } else if (text == "正在检查更新……") {
+                alert(text)
+                $("#checking span").text(text);
+            } else if (text == "检测到新版本，正在下载……") {
+                alert(text)
+                $("#updateAva span").text(text);
+            } else if (text == "现在使用的就是最新版本，不用更新") {
+                alert(text)
+                $("#updateNotAva span").text(text);
+            }
+        })
+
+        ipcRenderer.on('isUpdateNow', function (event, text) {
+            // 更新完成是否重启
+            alert("准备重新启动")
+            ipcRenderer.send('isUpdateNow')
+        })
+    </script>
+</body>
+
+</html>
